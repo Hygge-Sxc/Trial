@@ -150,24 +150,20 @@ explainer = shap.TreeExplainer(model)
 # 计算SHAP值
 shap_values = explainer.shap_values(input_df)
 
-# SHAP Force Plot
+# SHAP force plot
 st.markdown('**SHAP Force Plot**')
 force_plot = shap.force_plot(
-    expected_value,
-    shap_values,
-    input_df.iloc[0],
+    explainer.expected_value[1],
+    shap_values[1],
+    input_df,
     matplotlib=True
 )
 st.pyplot(force_plot)
 
-# SHAP Waterfall Plot
+# SHAP waterfall plot
 st.markdown('**SHAP Waterfall Plot**')
 fig, ax = plt.subplots(figsize=(10, 6))
-shap.plots._waterfall.waterfall_legacy(
-    expected_value, 
-    shap_values, 
-    feature_names=input_df.columns
-)
+shap.plots._waterfall.waterfall_legacy(explainer.expected_value[1], shap_values[1][0], feature_names=input_df.columns)
 st.pyplot(fig)
 
 # -------------------- LIME Explanation --------------------
